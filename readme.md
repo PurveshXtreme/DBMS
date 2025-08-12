@@ -324,3 +324,139 @@ Defines maximum number of relationships per entity.
 
 - Entities from both sets can have multiple relationships with each other.
 
+---
+
+## 11. What is Normalization? Why is it Important in DBMS?
+
+**Definition:**  
+Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity.  
+It involves splitting large tables into smaller, related tables and defining relationships between them.
+
+**Importance of Normalization:**
+- Eliminates redundant data.
+- Prevents anomalies during insert, update, and delete operations.
+- Improves data integrity and consistency.
+
+---
+
+## 12. What is Denormalization? How Does it Differ from Normalization?
+
+**Definition:**  
+Denormalization is the process of combining tables to improve query performance, often at the cost of introducing redundancy.  
+
+**Difference:**
+
+| Aspect         | Normalization                           | Denormalization                           |
+|----------------|----------------------------------------|--------------------------------------------|
+| Goal           | Minimize redundancy, improve integrity | Improve performance for read-heavy tasks  |
+| Data Redundancy| Reduced                                | Increased                                 |
+| Use Case       | Transactional systems                  | Analytical / reporting systems            |
+
+---
+
+## Normal Forms in DBMS
+
+**Last Updated:** 23 Jul, 2025  
+
+Normal Forms help structure data logically, reduce redundancy, and maintain integrity. Each normal form builds upon the previous.
+
+---
+
+### **Why is Normalization Important?**
+- **Reduces Data Redundancy:** Saves storage space and prevents inconsistencies.
+- **Improves Data Integrity:** Ensures accuracy and consistency.
+- **Simplifies Database Design:** Easier to maintain and update.
+- **Optimizes Performance:** Reduces anomalies and boosts operational efficiency.
+
+---
+
+### **Types of Normal Forms**
+
+#### 1. **First Normal Form (1NF)** – Eliminating Duplicate Records
+- Columns contain **atomic values**.
+- No repeating groups or arrays.
+- Each row is unique.
+
+**Example Violation:**  
+A single cell storing multiple phone numbers → split into separate rows.
+
+---
+
+#### 2. **Second Normal Form (2NF)** – Eliminating Partial Dependency
+- Must be in **1NF**.
+- No partial dependency (non-key attributes depend on **entire** primary key).
+
+**Example Violation:**  
+For `(StudentID, CourseID)` as key, `StudentName` depends only on `StudentID` → move `StudentName` to separate table.
+
+---
+
+#### 3. **Third Normal Form (3NF)** – Eliminating Transitive Dependency
+- Must be in **2NF**.
+- No transitive dependencies (non-key attributes should not depend on other non-key attributes).
+
+**Example Violation:**  
+If `Instructor` depends on `CourseID`, which depends on `StudentID` → move `Instructor` to table linked by `CourseID`.
+
+---
+
+#### 4. **Boyce–Codd Normal Form (BCNF)** – Strongest 3NF
+- Must be in **3NF**.
+- For every dependency `X → Y`, **X must be a superkey**.
+
+**Example Violation:**  
+If `(StudentID, CourseID) → Instructor` but neither `StudentID` nor `CourseID` is a superkey → decompose the table.
+
+![BCNF](https://media.geeksforgeeks.org/wp-content/uploads/20250108151038174913/bcnf.webp)
+
+---
+
+#### 5. **Fourth Normal Form (4NF)** – Removing Multi-Valued Dependencies
+- Must be in **BCNF**.
+- No multi-valued dependencies.
+
+**Example Violation:**  
+If `(StudentID, Language, Hobby)` exists with independent languages & hobbies → split into separate `Language` and `Hobby` tables.
+
+---
+
+#### 6. **Fifth Normal Form (5NF)** – Eliminating Join Dependency
+- Must be in **4NF**.
+- All join dependencies removed without losing information.
+
+---
+
+### **Advantages of Normalization**
+1. Reduces redundancy.
+2. Improves consistency.
+3. Simplifies design.
+4. Improves query performance.
+5. Easier maintenance.
+6. Facilitates scalability.
+7. Better data modeling.
+8. Prevents update anomalies.
+9. Improves security & integrity.
+10. Optimizes storage usage.
+
+---
+
+### **Challenges of Over-Normalization**
+- Complex queries with many joins.
+- Possible performance overhead in large systems.
+
+**When to Use:**
+- **Normalization:** Transaction-heavy systems (e.g., banking).
+- **Denormalization:** Read-heavy systems (e.g., data warehousing).
+
+| Normal Form | Rule / Condition | Purpose |
+|-------------|------------------|---------|
+| **1NF (First Normal Form)** | No repeating groups or arrays; each cell contains atomic (indivisible) values. | Remove duplicate columns and ensure atomicity. |
+| **2NF (Second Normal Form)** | Must be in 1NF **and** all non-key attributes must be fully dependent on the primary key (no partial dependency). | Remove partial dependency in composite keys. |
+| **3NF (Third Normal Form)** | Must be in 2NF **and** no transitive dependency (non-key attributes should not depend on other non-key attributes). | Remove transitive dependencies. |
+| **BCNF (Boyce-Codd Normal Form)** | Must be in 3NF **and** every determinant must be a candidate key. | Handle anomalies not covered by 3NF. |
+| **4NF (Fourth Normal Form)** | Must be in BCNF **and** no multi-valued dependencies. | Eliminate multi-valued dependency issues. |
+| **5NF (Fifth Normal Form)** | Must be in 4NF **and** no join dependency (table should not be decomposable without loss of data). | Ensure lossless decomposition. |
+
+---
+
+
