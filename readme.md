@@ -296,6 +296,17 @@ Defines maximum number of relationships per entity.
 
 - Entities from both sets can have multiple relationships with each other.
 
+### 48. Differences between an ER Diagram and a Relational Schema
+
+| Feature                | Entity-Relationship Diagram (ERD)                                                                 | Relational Schema                                                                                  |
+|------------------------|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| **Definition**         | A conceptual blueprint that models entities, relationships, and attributes of the database.       | A logical schema that defines the structure of a relational database (tables, columns, constraints). |
+| **Purpose**            | Used during the **database design phase** to understand how data entities relate to each other.   | Represents **how data is physically organized** in tables and columns.                            |
+| **Representation**     | Graphical form showing **entities, attributes, and relationships**.                               | Tabular form showing **tables, columns, keys, and data types**.                                   |
+| **Focus**              | Focuses on **conceptual design** — "what" data will be stored and how it relates.                  | Focuses on **implementation details** — "how" data will be stored in the DBMS.                    |
+| **Constraints**        | Shows relationships and cardinalities between entities.                                            | Defines **primary keys, foreign keys, and other constraints**.                                    |
+
+
 ---
 
 ## Normalization
