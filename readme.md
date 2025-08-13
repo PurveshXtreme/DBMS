@@ -378,13 +378,20 @@ A single cell storing multiple phone numbers → split into separate rows.
 #### 2. Second Normal Form (2NF) – Eliminating Partial Dependency
 - Must be in **1NF**.
 - No partial dependency (non-key attributes depend on **entire** primary key).
+- In 2NF, every non-prime attribute must be fully functionally dependent on the whole of every candidate key — it must not depend on just a part of any composite candidate key.
 
 **Example Violation:**  
 For `(StudentID, CourseID)` as key, `StudentName` depends only on `StudentID` → move `StudentName` to separate table.
 
 #### 3. Third Normal Form (3NF) – Eliminating Transitive Dependency
-- Must be in **2NF**.
-- No transitive dependencies (non-key attributes should not depend on other non-key attributes).
+A relation is in **3NF** if:
+
+1. It is already in **2NF**.
+2. **No transitive dependency** exists — i.e., a **non-prime attribute** must **not** depend on another **non-prime attribute**.
+3. **Equivalently:** For every functional dependency `X → Y` in the table, at least one of these must be true:
+   - **X** is a **superkey** (meaning it can uniquely identify a row), **or**
+   - **Y** is a **prime attribute** (part of some candidate key).
+
 
 **Example Violation:**  
 If `Instructor` depends on `CourseID`, which depends on `StudentID` → move `Instructor` to table linked by `CourseID`.
@@ -442,3 +449,129 @@ If `(StudentID, Language, Hobby)` exists with independent languages & hobbies �
 
 ---
 
+# Normal Forms Examples with Conflicts & Resolutions
+
+---
+
+## **1NF (First Normal Form)**
+**Rule:**  
+- Only **atomic values** (no repeating groups or multi-valued attributes)  
+- No composite attributes  
+- No duplicate rows  
+
+**Conflicting Table (Not in 1NF):**
+| StudentID | Name     | Phone Numbers         |
+|-----------|----------|-----------------------|
+| 1         | Alice    | 12345, 67890           |
+| 2         | Bob      | 55555                  |
+
+**Issue:**  
+`Phone Numbers` column contains multiple values (multi-valued attribute).
+
+**Resolved Table (1NF):**
+| StudentID | Name     | Phone Number |
+|-----------|----------|--------------|
+| 1         | Alice    | 12345        |
+| 1         | Alice    | 67890        |
+| 2         | Bob      | 55555        |
+
+---
+
+## **2NF (Second Normal Form)**
+**Rule:**  
+- Must be in **1NF**  
+- **No partial dependency** (No non-prime attribute should depend on part of a composite key)
+
+**Conflicting Table (1NF but not 2NF):**
+| StudentID | CourseID | StudentName | CourseName |
+|-----------|----------|-------------|------------|
+| 1         | C1       | Alice       | DBMS       |
+| 1         | C2       | Alice       | OS         |
+
+**Issue:**  
+- Candidate key = `(StudentID, CourseID)`  
+- `StudentName` depends **only** on `StudentID`  
+- `CourseName` depends **only** on `CourseID` → **Partial dependency**
+
+**Resolved Tables (2NF):**
+**Student Table:**
+| StudentID | StudentName |
+|-----------|-------------|
+| 1         | Alice       |
+
+**Course Table:**
+| CourseID  | CourseName  |
+|-----------|-------------|
+| C1        | DBMS        |
+| C2        | OS          |
+
+**Enrollment Table:**
+| StudentID | CourseID |
+|-----------|----------|
+| 1         | C1       |
+| 1         | C2       |
+
+---
+
+## **3NF (Third Normal Form)**
+**Rule:**  
+- Must be in **2NF**  
+- No **transitive dependency** (No non-prime attribute depends on another non-prime attribute)
+
+**Conflicting Table (2NF but not 3NF):**
+| StudentID | StudentName | DeptID | DeptName  |
+|-----------|-------------|--------|-----------|
+| 1         | Alice       | D1     | Computer  |
+| 2         | Bob         | D2     | Physics   |
+
+**Issue:**  
+- Candidate key = `StudentID`  
+- `DeptName` depends on `DeptID` (which is a non-prime attribute) → **Transitive dependency**
+
+**Resolved Tables (3NF):**
+**Student Table:**
+| StudentID | StudentName | DeptID |
+|-----------|-------------|--------|
+| 1         | Alice       | D1     |
+| 2         | Bob         | D2     |
+
+**Department Table:**
+| DeptID | DeptName  |
+|--------|-----------|
+| D1     | Computer  |
+| D2     | Physics   |
+
+---
+
+## **4NF (Fourth Normal Form)**
+**Rule:**  
+- Must be in **Boyce–Codd Normal Form (BCNF)**  
+- No **multi-valued dependencies** (MVDs) unless trivial  
+
+**Conflicting Table (3NF/BCNF but not 4NF):**
+| StudentID | Hobby       | Language |
+|-----------|-------------|----------|
+| 1         | Chess       | English  |
+| 1         | Chess       | French   |
+| 1         | Painting    | English  |
+| 1         | Painting    | French   |
+
+**Issue:**  
+- `Hobby` and `Language` are **independent multi-valued facts** about `StudentID`  
+- This leads to redundant combinations
+
+**Resolved Tables (4NF):**
+**StudentHobby Table:**
+| StudentID | Hobby     |
+|-----------|-----------|
+| 1         | Chess     |
+| 1         | Painting  |
+
+**StudentLanguage Table:**
+| StudentID | Language  |
+|-----------|-----------|
+| 1         | English   |
+| 1         | French    |
+
+
+----
