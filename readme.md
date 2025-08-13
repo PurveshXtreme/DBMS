@@ -332,6 +332,39 @@ Normal Forms help structure data logically, reduce redundancy, and maintain inte
 - **Simplifies Database Design:** Easier to maintain and update.
 - **Optimizes Performance:** Reduces anomalies and boosts operational efficiency.
 
+## Q: What is a Candidate Key in DBMS?
+A **Candidate Key** is a **minimal set of one or more attributes** that can **uniquely identify a tuple** in a relation.  
+- **Minimal** means if you remove any attribute from it, it will no longer be able to uniquely identify tuples.  
+- A table can have multiple candidate keys, and one of them is chosen as the **Primary Key**.
+
+**Example:**  
+In a `STUDENT` table with `(RollNo, Email, Phone)`, both `RollNo` and `Email` can uniquely identify a student — hence they are **candidate keys**.
+
+---
+
+## Q: What is a Prime Attribute in DBMS?
+A **Prime Attribute** is any attribute that is **part of at least one candidate key**.  
+- If an attribute is not part of any candidate key, it’s called a **Non-Prime Attribute**.
+
+**Example:**  
+For `STUDENT(RollNo, Email, Name)`:
+- **Candidate keys:** `{RollNo}`, `{Email}`
+- **Prime attributes:** `RollNo`, `Email`
+- **Non-prime attribute:** `Name`
+
+---
+
+### Quick Comparison Table
+
+| Term              | Definition | Example (STUDENT: RollNo, Email, Name) |
+|-------------------|------------|----------------------------------------|
+| **Candidate Key** | Minimal set of attributes that uniquely identify a tuple | `{RollNo}`, `{Email}` |
+| **Primary Key**   | One chosen candidate key to uniquely identify tuples | `{RollNo}` |
+| **Alternate Key** | Candidate keys other than the primary key | `{Email}` |
+| **Prime Attribute** | Attribute part of at least one candidate key | `RollNo`, `Email` |
+| **Non-Prime Attribute** | Attribute not part of any candidate key | `Name` |
+
+
 ### Types of Normal Forms
 
 #### 1. First Normal Form (1NF) – Eliminating Duplicate Records
@@ -409,10 +442,3 @@ If `(StudentID, Language, Hobby)` exists with independent languages & hobbies �
 
 ---
 
-## Contributing
-
-Feel free to contribute to this study guide by submitting pull requests or opening issues for any corrections or additions.
-
-## License
-
-This study guide is provided for educational purposes. Please refer to original sources for the most up-to-date information.
