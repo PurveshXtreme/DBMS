@@ -9,6 +9,7 @@
 - [Relations, tables, rows, columns, and keys in DBMS? Also, what are the primary components of a DBMS?](#relations-tables-rows-columns-and-keys-in-dbms-also-what-are-the-primary-components-of-a-dbms)
 - [Entity-Relationship (ER) Model](#entity-relationship-er-model)
 - [Normalization](#normalization)
+- [Schema, Constraints, and Keys](#schema-constraints-and-keys)
 
 ---
 
@@ -588,3 +589,40 @@ If `(StudentID, Language, Hobby)` exists with independent languages & hobbies â†
 
 
 ----
+
+## Schema, Constraints, and Keys
+
+**Schema in DBMS:**  
+A **schema** defines the **organization and structure** of data in a database.  
+It includes:
+- **Tables** and their columns
+- **Views**
+- **Relationships**
+- **Constraints** and keys
+
+It serves as the **blueprint** for how the database is constructed, specifying **data types, keys, and relationships**.
+
+---
+
+**Constraints in DBMS:**  
+Constraints are **rules** applied to table data to maintain **data integrity** and **consistency**.  
+
+| Constraint     | Description                                                                                          | Example |
+|----------------|------------------------------------------------------------------------------------------------------|---------|
+| **NOT NULL**   | Ensures a column cannot have NULL values.                                                            | `Name VARCHAR(50) NOT NULL;` |
+| **PRIMARY KEY**| Uniquely identifies each record; no NULLs allowed.                                                   | `ID INT PRIMARY KEY;` |
+| **FOREIGN KEY**| Ensures referential integrity by linking a column to a primary key in another table.                 | `BranchCode INT FOREIGN KEY REFERENCES Branch(BranchCode);` |
+| **UNIQUE**     | Ensures all values in a column are distinct; allows NULL values.                                     | `Email VARCHAR(100) UNIQUE;` |
+| **CHECK**      | Ensures column values meet a specific condition.                                                     | `Age INT CHECK (Age >= 18);` |
+| **DEFAULT**    | Assigns a default value if none is provided during insertion.                                        | `Status VARCHAR(10) DEFAULT 'Active';` |
+
+---
+
+**Primary Key vs. Unique Key:**
+
+| Feature           | Primary Key                                                                                 | Unique Key                                                                             |
+|-------------------|----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| **Purpose**       | Uniquely identifies each record in a table.                                                  | Ensures all values in a column/set of columns are unique.                              |
+| **NULL Values**   | Cannot contain NULL values.                                                                  | Can contain NULL values (but only one NULL in most DBMS).                              |
+| **Count per Table**| Only **one** primary key is allowed.                                                         | Multiple unique keys can exist in the same table.                                      |
+| **Uniqueness**    | Guarantees uniqueness for the **entire table**.                                               | Guarantees uniqueness for the specific column(s) it is applied to.                     |
