@@ -199,6 +199,8 @@ Here, `BRANCH_CODE` in `STUDENT` is a foreign key referencing `BRANCH_CODE` in `
 A **Candidate Key** is a set of one or more attributes that can uniquely identify a tuple in a relation.  
 - A relation can have **multiple candidate keys**.  
 - One of these is selected as the **primary key**.
+###Superkey:
+A set of one or more attributes that can uniquely identify a row in a table. It may contain unnecessary attributes.
 
 ---
 
