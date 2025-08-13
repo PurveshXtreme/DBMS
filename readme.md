@@ -10,6 +10,7 @@
 - [Entity-Relationship (ER) Model](#entity-relationship-er-model)
 - [Normalization](#normalization)
 - [Schema, Constraints, and Keys](#schema-constraints-and-keys)
+- [Joins in SQL](#joins-in-sql)
 
 ---
 
@@ -626,3 +627,99 @@ Constraints are **rules** applied to table data to maintain **data integrity** a
 | **NULL Values**   | Cannot contain NULL values.                                                                  | Can contain NULL values (but only one NULL in most DBMS).                              |
 | **Count per Table**| Only **one** primary key is allowed.                                                         | Multiple unique keys can exist in the same table.                                      |
 | **Uniqueness**    | Guarantees uniqueness for the **entire table**.                                               | Guarantees uniqueness for the specific column(s) it is applied to.                     |
+
+---
+
+## Joins in SQL
+
+**Definition:**  
+A **JOIN** in SQL is an operation that combines columns from two or more tables based on a **related column** between them.  
+It is used to query and retrieve data from multiple tables in a relational database.
+
+---
+
+### Types of Joins
+
+1. **INNER JOIN**  
+   Returns only the rows where there is a match in both tables.  
+
+   **Example:**
+   ```sql
+   SELECT * 
+   FROM Student
+   INNER JOIN Course 
+       ON Student.ID = Course.StudentID;
+   ```
+
+2. **LEFT JOIN (LEFT OUTER JOIN)**  
+   Returns all rows from the **left** table and matching rows from the right table.  
+   If no match exists, NULL values are returned for columns from the right table.
+
+   **Example:**
+   ```sql
+   SELECT * 
+   FROM Student
+   LEFT JOIN Course 
+       ON Student.ID = Course.StudentID;
+   ```
+
+3. **RIGHT JOIN (RIGHT OUTER JOIN)**  
+   Returns all rows from the **right** table and matching rows from the left table.  
+   If no match exists, NULL values are returned for columns from the left table.
+
+   **Example:**
+   ```sql
+   SELECT * 
+   FROM Student
+   RIGHT JOIN Course 
+       ON Student.ID = Course.StudentID;
+   ```
+
+4. **FULL JOIN (FULL OUTER JOIN)**  
+   Returns all rows when there is a match in **either** left or right table.  
+   If no match exists, NULL values are returned for columns of the table without a match.
+
+   **Example:**
+   ```sql
+   SELECT * 
+   FROM Student
+   FULL JOIN Course 
+       ON Student.ID = Course.StudentID;
+   ```
+
+5. **CROSS JOIN**  
+   Returns the **Cartesian product** of two tables — every combination of rows from both tables.
+
+   **Example:**
+   ```sql
+   SELECT * 
+   FROM Student
+   CROSS JOIN Course;
+   ```
+
+6. **SELF JOIN**  
+   Joins a table with itself, useful for comparing rows in the same table.  
+   Uses table aliases to differentiate instances.
+
+   **Example:**
+   ```sql
+   SELECT E1.Employee_ID, E1.Employee_Name, E2.Employee_Name AS Manager_Name
+   FROM Employee E1
+   LEFT JOIN Employee E2 
+       ON E1.Manager_ID = E2.Employee_ID;
+   ```
+
+---
+
+### INNER JOIN vs OUTER JOIN
+
+| Aspect        | INNER JOIN                                                | OUTER JOIN                                                                 |
+|---------------|-----------------------------------------------------------|------------------------------------------------------------------------------|
+| **Result Set**| Only matching rows from both tables.                       | All rows from one or both tables, with NULL where no match is found.         |
+| **Types**     | Single type.                                               | Three types: **LEFT**, **RIGHT**, **FULL**.                                  |
+| **Use Case**  | When you only need intersecting data.                      | When you want to preserve all data, even with mismatches.                    |
+| **Performance**| Generally faster (fewer rows).                            | Can be slower (handles more rows and NULLs).                                 |
+| **Reliability**| Reliable for matched data.                                | Reliable for full data retention, but may introduce NULL-related complexities.|
+
+---
+
