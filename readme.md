@@ -8,6 +8,7 @@
 - [What are the different types of DBMS architecture?](#what-are-the-different-types-of-dbms-architecture)
 - [Relations, tables, rows, columns, and keys in DBMS? Also, what are the primary components of a DBMS?](#relations-tables-rows-columns-and-keys-in-dbms-also-what-are-the-primary-components-of-a-dbms)
 - [Entity-Relationship (ER) Model](#entity-relationship-er-model)
+- [Data Redundancy, Referential Integrity, and DBMS Role](#data-redundancy-referential-integrity-and-dbms-role)
 - [Normalization](#normalization)
 - [Schema, Constraints, and Keys](#schema-constraints-and-keys)
 - [Joins in SQL](#joins-in-sql)
@@ -307,6 +308,55 @@ Defines maximum number of relationships per entity.
 | **Representation**     | Graphical form showing **entities, attributes, and relationships**.                               | Tabular form showing **tables, columns, keys, and data types**.                                   |
 | **Focus**              | Focuses on **conceptual design** — "what" data will be stored and how it relates.                  | Focuses on **implementation details** — "how" data will be stored in the DBMS.                    |
 | **Constraints**        | Shows relationships and cardinalities between entities.                                            | Defines **primary keys, foreign keys, and other constraints**.                                    |
+
+---
+
+## Data Redundancy, Referential Integrity, and DBMS Role
+
+### **Data Redundancy**
+**Definition:**  
+Data redundancy refers to the **unnecessary repetition of data** in a database.  
+It can cause:
+- **Inconsistencies** in data
+- **Increased storage requirements**
+- **Maintenance challenges**
+
+**Reduction Methods:**
+1. **Normalization** – Splitting large tables into smaller ones to eliminate redundancy.
+2. **Eliminating Duplicate Data** – Using constraints like `UNIQUE` and `PRIMARY KEY` to enforce data consistency.
+
+---
+
+### **Referential Integrity**
+**Definition:**  
+Referential integrity ensures that **relationships between tables are maintained correctly**.  
+It requires that:
+- A **foreign key** in one table must match a **primary key** or **unique key** in another table, **or be NULL**.
+- Prevents **orphan records** (records referencing non-existent entries).
+
+**Example:**
+```sql
+-- Ensuring CustomerID in Orders table is valid
+ALTER TABLE Orders
+ADD CONSTRAINT FK_Customer
+FOREIGN KEY (CustomerID)
+REFERENCES Customers(CustomerID);
+```
+
+---
+
+### **Role of DBMS in Data Integrity and Security**
+1. **Data Integrity:**
+   - Enforced using constraints like **Primary Key**, **Foreign Key**, and **Check** constraints.
+   - Ensures **accuracy** and **consistency** of data.
+
+2. **Data Security:**
+   - **User Authentication** – Validates users before access.
+   - **Access Control** – Grants or restricts permissions to data.
+   - **Encryption** – Protects data from unauthorized viewing.
+   - **Role-Based Access Control (RBAC)** – Allows only authorized users to perform specific actions.
+
+---
 
 
 ---
