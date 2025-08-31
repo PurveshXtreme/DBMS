@@ -12,6 +12,7 @@
 - [Normalization](#normalization)
 - [Schema, Constraints, and Keys](#schema-constraints-and-keys)
 - [Joins in SQL](#joins-in-sql)
+- [SQL Queries and Operations](#sql-queries-and-operations)
 
 ---
 
@@ -771,5 +772,97 @@ It is used to query and retrieve data from multiple tables in a relational datab
 | **Performance**| Generally faster (fewer rows).                            | Can be slower (handles more rows and NULLs).                                 |
 | **Reliability**| Reliable for matched data.                                | Reliable for full data retention, but may introduce NULL-related complexities.|
 
+---
+---
+
+## SQL Queries and Operations
+
+## What is the use of the SQL SELECT statement?
+
+The **SELECT** statement is used to query data from one or more tables. It allows you to retrieve specific columns or all columns, optionally applying filters (WHERE), sorting (ORDER BY), and joining multiple tables.
+
+**Example:**
+```sql
+SELECT NAME, AGE FROM STUDENT WHERE AGE > 18;
+```
+
+## What is the difference between DELETE and TRUNCATE in SQL?
+
+**DELETE:** Deletes specific rows from a table based on a condition. It logs each row deletion and can be rolled back.
+
+**TRUNCATE:** Removes all rows from a table without logging individual row deletions. It cannot be rolled back and is faster than DELETE.
+
+## What is a subquery in SQL? Provide an example.
+
+A subquery in SQL is a query embedded within another query. It is used to retrieve data that will be used in the outer query. Subqueries can be used in SELECT, INSERT, UPDATE, or DELETE statements.
+
+There are two types of subqueries:
+- **Single-row subquery:** Returns a single value.
+- **Multiple-row subquery:** Returns multiple values.
+
+**Example of a subquery:** To find the names of students who have a higher age than the average age:
+```sql
+SELECT Name FROM Student
+WHERE Age > (SELECT AVG(Age) FROM Student);
+```
+
+## What are aggregate functions in SQL? Name a few examples.
+
+Aggregate functions in SQL are functions that operate on a set of values (or a group of rows) and return a single result. They are often used in conjunction with the GROUP BY clause. Here are a few commonly used aggregate functions in SQL:
+
+1. **COUNT():** Returns the number of rows or non-NULL values in a column
+   ```sql
+   SELECT COUNT(*) FROM Student;
+   ```
+
+2. **SUM():** Returns the sum of values in a numeric column.
+   ```sql
+   SELECT SUM(Amount) FROM Orders;
+   ```
+
+3. **AVG():** Returns the average value of a numeric column.
+   ```sql
+   SELECT AVG(Salary) FROM Employees;
+   ```
+
+4. **MAX():** Returns the maximum value in a column
+   ```sql
+   SELECT MAX(Age) FROM Student;
+   ```
+
+5. **MIN():** Returns the minimum value in a column.
+   ```sql
+   SELECT MIN(Salary) FROM Employees;
+   ```
+
+## What is the difference between UNION and UNION ALL in SQL?
+
+**UNION:** Combines the result of two queries and removes duplicate rows.
+
+**UNION ALL:** Combines the result of two queries but does not remove duplicates, thus it is faster than UNION.
+
+**Example:**
+```sql
+SELECT Name FROM Students
+UNION
+SELECT Name FROM Teachers;  -- Removes duplicates
+
+SELECT Name FROM Students
+UNION ALL
+SELECT Name FROM Teachers;  -- Does not remove duplicates
+```
+
+## What is the purpose of the GROUP BY clause in SQL?
+
+The GROUP BY clause is used in SQL to group rows that have the same values in specified columns into summary rows, often with aggregate functions like COUNT, SUM, AVG, MIN, or MAX. It is typically used to organize data for reporting or analysis.
+
+**Example:** This groups the employees by department and counts the number of employees in each department.
+```sql
+SELECT Department, COUNT(*) FROM Employees
+GROUP BY Department;
+```
+
+
+---
 ---
 
