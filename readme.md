@@ -14,6 +14,20 @@
 - [Joins in SQL](#joins-in-sql)
 - [SQL Queries and Operations](#sql-queries-and-operations)
 - [Transactions and ACID](#transactions-and-acid)
+- [Views](#views)  
+- [Stored Procedures and Functions](#stored-procedures-and-functions)  
+- [Triggers](#triggers)  
+- [Indexing](#indexing)  
+- [B-trees and B+ trees](#b-trees-and-b+-trees)  
+- [Hashing](#hashing)  
+- [Database Locks](#database-locks)  
+- [Concurrency Control and Deadlocks](#concurrency-control-and-deadlocks)  
+- [Cursors](#cursors)  
+- [Materialized Views](#materialized-views)  
+- [Data Partitioning](#data-partitioning)  
+- [Backup and Recovery](#backup-and-recovery)  
+- [Database Administration](#database-administration)
+
 
 
 ---
