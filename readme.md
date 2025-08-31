@@ -13,6 +13,8 @@
 - [Schema, Constraints, and Keys](#schema-constraints-and-keys)
 - [Joins in SQL](#joins-in-sql)
 - [SQL Queries and Operations](#sql-queries-and-operations)
+- [Transactions and ACID](#transactions-and-acid)
+
 
 ---
 
@@ -865,4 +867,65 @@ GROUP BY Department;
 
 ---
 ---
+
+## Transactions and ACID
+
+## What is a transaction in DBMS? What are the properties of a transaction?
+
+A **transaction** in DBMS is a sequence of one or more SQL operations executed as a single unit of work. A transaction ensures data integrity, consistency, and isolation, and it guarantees that the database reaches a valid state, regardless of errors or system failures.
+
+**Properties of a transaction (ACID Properties):**
+* **Atomicity:** All operations within the transaction are completed successfully, or none are applied (i.e., the transaction is atomic).
+* **Consistency:** The transaction brings the database from one valid state to another valid state.
+* **Isolation:** The operations of one transaction are isolated from others; intermediate results are not visible to other transactions.
+* **Durability:** Once a transaction is committed, its effects are permanent, even in the event of a system crash.
+
+## What is the ACID Property in DBMS?
+
+In **Database Management Systems (DBMS)**, the **ACID** property is a set of principles that ensure reliable, consistent, and safe transaction processing. Each letter in ACID represents a fundamental property:
+
+1. **Atomicity**  
+   - Definition: A transaction is treated as a single, indivisible unit of work.  
+   - Meaning: Either **all operations** in a transaction succeed, or **none do**.  
+   - Example: If a bank transfer involves debiting one account and crediting another, both operations must succeed together. If one fails, the entire transaction is rolled back.
+
+2. **Consistency**  
+   - Definition: Ensures that a transaction takes the database from one valid state to another valid state.  
+   - Meaning: All database rules, constraints, and relationships are maintained after the transaction.  
+   - Example: If a table enforces a constraint that account balances cannot be negative, any transaction violating this is rejected.
+
+3. **Isolation**  
+   - Definition: Transactions are executed in isolation from each other.  
+   - Meaning: The intermediate state of a transaction is **invisible to other transactions** until it is committed.  
+   - Example: Two users updating the same record simultaneously will not interfere with each other; each sees a consistent snapshot of the database.
+
+4. **Durability**  
+   - Definition: Once a transaction is committed, its results are permanent.  
+   - Meaning: Changes are saved even in the event of a system crash, power failure, or hardware issue.  
+   - Example: After successfully transferring money, the debit and credit changes remain in the database even if the server fails immediately afterward.
+
+## What is the Importance of COMMIT and ROLLBACK Operations?
+
+In **DBMS**, **COMMIT** and **ROLLBACK** are essential operations that manage transaction control and ensure the **ACID** properties of a database.
+
+1. **COMMIT**  
+   - Definition: Permanently saves all changes made during the current transaction to the database.  
+   - Importance: Ensures that the changes are **durable** and visible to other transactions.  
+   - Example: After transferring funds between accounts, a `COMMIT` ensures the updated balances are permanently recorded.
+
+2. **ROLLBACK**  
+   - Definition: Reverses all changes made during the current transaction, restoring the database to its previous state.  
+   - Importance: Maintains **atomicity**, allowing the database to remain consistent in case of errors or failures.  
+   - Example: If an error occurs while updating multiple tables during a transaction, `ROLLBACK` will undo all partial changes, preventing inconsistent data.
+
+## What is a transaction log in DBMS?
+
+A **transaction log** is a record that keeps track of all transactions executed on a database. It ensures that changes made by transactions are saved, and in case of a system failure, the log can be used to recover the database to its last consistent state. The transaction log contains:
+* The details of each transaction (e.g., start, commit, rollback).
+* Information about data modifications (insertions, updates, deletions).
+* Details about the data before and after the change.
+
+---
+---
+
 
