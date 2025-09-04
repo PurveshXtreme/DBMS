@@ -17,11 +17,11 @@
 - [Views](#views)  
 - [Stored Procedures and Functions](#stored-procedures-and-functions)  
 - [Triggers](#triggers)  
-- [Indexing](#indexing)  
+- [Indexing](#indexing)
+- [Concurrency Control and Deadlocks](#concurrency-control-and-deadlocks) 
 - [B-trees and B+ trees](#b-trees-and-b+-trees)  
 - [Hashing](#hashing)  
 - [Database Locks](#database-locks)  
-- [Concurrency Control and Deadlocks](#concurrency-control-and-deadlocks)  
 - [Cursors](#cursors)  
 - [Materialized Views](#materialized-views)  
 - [Data Partitioning](#data-partitioning)  
@@ -942,4 +942,187 @@ A **transaction log** is a record that keeps track of all transactions executed 
 ---
 ---
 
+## Views 
+
+**Q: What is a view in DBMS? How does it differ from a table?**
+
+**A:**  
+A **View** is a **virtual table** created by querying one or more base tables. Unlike a regular table, a view:  
+- Does not store data physically.  
+- Retrieves data dynamically from the underlying base tables when queried.  
+- Acts as a saved SQL query that simplifies complex queries and improves security by restricting data access.  
+
+**Difference from a Table:**  
+- A **table** physically stores data in rows and columns.  
+- A **view** does not store its own data; it only presents data derived from other tables.
+
+---
+
+**Q: What is the use of the "WITH CHECK OPTION" in SQL views?**
+
+**A:**  
+The **WITH CHECK OPTION** is used when creating a view to ensure that any `INSERT` or `UPDATE` operation performed through the view must satisfy the conditions defined in the view’s `WHERE` clause.  
+- If the data being modified does not meet the view condition, the operation will be rejected.  
+- This maintains data integrity and prevents inconsistent data entry.
+
+**Example:**  
+```sql
+CREATE VIEW ActiveStudents AS
+SELECT * FROM Students WHERE Status = 'Active'
+WITH CHECK OPTION;
+```
+
+---
+---
+
+## Stored Procedures and Functions
+
+## Stored Procedures in DBMS
+
+### Q: Explain the concept of a stored procedure in DBMS.
+
+**A:**  
+A **stored procedure** is a **precompiled collection of one or more SQL statements** stored in the database. It allows execution of a series of operations as a single unit, improving performance, reusability, and security.  
+
+- Can accept **input parameters**.  
+- Can perform multiple operations such as `INSERT`, `UPDATE`, `DELETE`, or `SELECT`.  
+- Can return results, but returning a value is optional.  
+
+**Example:**
+```sql
+CREATE PROCEDURE GetStudentDetails(IN student_id INT)
+BEGIN
+   SELECT * FROM Student WHERE ID = student_id;
+END;
+```
+
+
+## Stored Functions in DBMS
+
+### Q: What are stored functions in DBMS?
+
+**A:**  
+A **stored function** is a set of SQL statements stored in the database that performs some logic and **must return a single value**.  
+
+- Accepts **input parameters**.  
+- Always returns a value (unlike procedures).  
+- Commonly used for calculations, validations, or retrieving specific values.  
+
+**Example:**
+```sql
+CREATE FUNCTION GetEmployeeSalary(EmployeeID INT)
+RETURNS DECIMAL(10,2)
+BEGIN
+   DECLARE salary DECIMAL(10,2);
+   SELECT Salary INTO salary FROM Employee WHERE ID = EmployeeID;
+   RETURN salary;
+END;
+```
+
+---
+---
+
+## Triggers
+
+## Triggers in DBMS
+
+### Q: What are triggers in DBMS? How do they differ from stored procedures?
+
+**A:**  
+A **trigger** is a special kind of stored procedure that automatically executes (or *fires*) in response to specific events on a table, such as `INSERT`, `UPDATE`, or `DELETE`. They are mainly used to enforce business rules, maintain data consistency, or log changes automatically.
+
+**Example:**
+```markdown
+CREATE TRIGGER after_student_insert
+AFTER INSERT ON Student
+FOR EACH ROW
+BEGIN
+   INSERT INTO AuditLog (Action, StudentID, ActionTime)
+   VALUES ('INSERT', NEW.ID, NOW());
+END;
+```
+
+| Aspect           | Trigger                                                                 | Stored Procedure                                                                 |
+|------------------|-------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| **Execution**    | Executes automatically when a specific event (`INSERT`, `UPDATE`, `DELETE`) occurs on a table. | Executed manually by a user or application.                                      |
+| **Invocation**   | Cannot be invoked explicitly; tied to table events.                     | Must be invoked explicitly using `CALL` or from an application.                  |
+| **Return Value** | Does not return values directly.                                        | Can return values and output parameters.                                         |
+| **Use Case**     | Enforcing business rules, maintaining consistency, logging changes.     | Performing complex logic, batch processing, calculations, or repeated operations.|
+
+---
+---
+
+## Indexing
+
+## Indexing in DBMS
+
+### Q: What is an index in DBMS, how is indexing used, and what is the difference between clustered and non-clustered indexes?
+
+**A:**  
+An **index** in DBMS is a data structure that improves the speed of data retrieval operations on a database table. It works like a **table of contents** in a book, allowing the database to quickly locate the position of a record based on a column value.  
+
+**Indexing** is the technique of creating indexes to speed up the retrieval of records from a table. Instead of scanning the entire table, the DBMS uses the index for a quick lookup, leading to better performance.
+
+---
+
+### Types of Indexes
+- **Single-column index:** Created on one column.  
+- **Composite index:** Created on multiple columns.  
+- **Unique index:** Ensures that no two rows have the same values in the indexed columns.  
+
+---
+
+### Difference between Clustered and Non-Clustered Indexes
+
+| Aspect                  | Clustered Index                                                                 | Non-Clustered Index                                                        |
+|-------------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| **Data Storage**        | Organizes and stores the actual table rows according to the index key.           | Creates a separate structure with pointers to the data rows in the table.  |
+| **Number per Table**    | Only one clustered index is allowed per table.                                   | Multiple non-clustered indexes can exist on the same table.                |
+| **Access Speed**        | Faster for range queries due to physical ordering of data.                       | Slower compared to clustered for large scans, but useful for lookups.      |
+| **Sorting**             | Determines the physical order of data in the table.                              | Does not affect the physical order of the data in the table.               |
+
+---
+---
+
+## Concurrency Control and Deadlocks
+
+## Concurrency Control and Deadlocks in DBMS
+
+### Q: What is a deadlock in DBMS, how can it be prevented, and how does DBMS handle concurrency control?
+
+**A:**  
+
+A **deadlock** occurs when two or more transactions are blocked because each transaction is waiting for the other to release resources. This creates a cycle where none of the transactions can proceed.  
+
+---
+
+### Deadlock Prevention Techniques
+- **Lock ordering:** Ensure that all transactions acquire locks in the same predefined order.  
+- **Timeouts:** Automatically roll back transactions that have been waiting too long for resources.  
+- **Deadlock detection:** Periodically check for deadlocks and abort one of the transactions to break the cycle.  
+
+---
+
+### Concurrency Control in DBMS
+Concurrency control ensures that multiple transactions can execute simultaneously **without causing conflicts or inconsistencies** in the database.  
+
+**Techniques used for concurrency control:**
+- **Locking:**  
+  Transactions acquire locks to control access to data.  
+  - *Shared lock (S-lock):* Allows multiple transactions to read the same data but not modify it.  
+  - *Exclusive lock (X-lock):* Allows only one transaction to modify the data.  
+
+- **Timestamp Ordering:**  
+  Each transaction is assigned a unique timestamp, and operations are executed in timestamp order to maintain consistency.  
+
+- **Optimistic Concurrency Control:**  
+  Transactions execute without acquiring locks. Before commit, the system checks for conflicts and aborts the transaction if any conflict is found.  
+
+- **Two-Phase Locking (2PL):**  
+  - *Growing phase:* Transaction acquires all required locks.  
+  - *Shrinking phase:* Transaction releases locks but cannot acquire new ones.  
+  This ensures **serializability** and helps in avoiding deadlocks.  
+
+---
+---
 
